@@ -327,6 +327,16 @@ local text_colors = {
     tab = {216,17,89}
 }
 
+function util.color255To1(color)
+    local color_mod = {}
+    local i = 1
+    while color[i] do
+        color_mod[i] = color[i] / 255.0
+        i = i + 1
+    end
+    return color_mod
+end
+
 --If non_default_color isn't nil, everything that is not default will be colored that way
 --ignore is a string that lists all color tags that should be treated as default
 function util.stylizeText(text, default_color, ignore)
@@ -349,7 +359,7 @@ function util.stylizeText(text, default_color, ignore)
               table.insert(colored_text, default_color)
               table.insert(all_but_default_text, {0,0,0,0})
             else
-                table.insert(colored_text, color)
+                table.insert(colored_text, util.color255To1(color))
                 table.insert(all_but_default_text, color)
             end
         else

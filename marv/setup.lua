@@ -371,7 +371,7 @@ function setup.config()
     end
 
     --CUSTOM PUZZLES FOLDER--
-    if not love.filesystem.exists("custom") then
+    if not love.filesystem.getInfo("custom") then
         if not love.filesystem.createDirectory("custom") then
             print("Couldn't create custom puzzles directory")
         else

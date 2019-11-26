@@ -67,7 +67,7 @@ function hsl.a(c) return c.a end
 function hsl.copy(c1, c2)  c1.h, c1.s, c1.l, c1.a = c2.h, c2.s, c2.l, c2.a end
 
 --Set the color used for drawing
-function hsl.set(c) love.graphics.setColor(hsl.convert(c.h, c.s, c.l, c.a)) end
+function hsl.set(c) love.graphics.setColor(hsl.convert(c.h/255.0, c.s/255.0, c.l/255.0, c.a/255.0)) end
 
 --Set the color used for drawing using 255 as alpha amount
 function hsl.setOpaque(c) love.graphics.setColor(hsl.convert(c.h, c.s, c.l, 255)) end

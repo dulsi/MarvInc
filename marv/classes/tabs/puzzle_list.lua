@@ -133,7 +133,7 @@ function PuzzleListTab:refresh()
     end
     if not has_diego then
         for puzzle in pairs(LoreManager.puzzle_done) do
-            if puzzle:find('diego') and love.filesystem.exists('puzzles/' .. puzzle .. '.lua') then
+            if puzzle:find('diego') and love.filesystem.getInfo('puzzles/' .. puzzle .. '.lua') then
                 local a = "Diego Lorenzo Vega"
                 puzzles[a] = puzzles[a] or {}
                 table.insert(puzzles[a], puzzle)
@@ -155,7 +155,7 @@ function PuzzleListTab:refresh()
     -- refresh custom puzzles list --
     local l = self.lists[2]
     l.buttons = {}
-    if love.filesystem.exists("custom") then
+    if love.filesystem.getInfo("custom") then
         local list = {}
         for _, file in ipairs(love.filesystem.getDirectoryItems("custom")) do
             if love.filesystem.isFile("custom/"..file.."/level.lua") then

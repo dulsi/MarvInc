@@ -21,10 +21,10 @@ local current_common_version = "1"
 local current_save_version = "3"
 
 function sm.base_user_save(user)
-    if not f.exists('saves/' .. user) then
+    if not f.getInfo('saves/' .. user) then
         f.createDirectory('saves/'.. user)
     end
-    if not f.exists('saves/' .. user .. '/custom_puzzles') then
+    if not f.getInfo('saves/' .. user .. '/custom_puzzles') then
         f.createDirectory('saves/' .. user .. '/custom_puzzles')
     end
     f.write('saves/' .. user .. '/version', current_save_version)
@@ -144,7 +144,7 @@ function sm.login(user)
             end
         end
         -- load custom emails
-        if love.filesystem.exists("custom") then
+        if love.filesystem.getInfo("custom") then
             local list = {}
             for _, file in ipairs(love.filesystem.getDirectoryItems("custom")) do
                 if love.filesystem.isFile("custom/"..file.."/email.lua") then
@@ -183,7 +183,7 @@ function sm.logout()
 end
 
 function sm.common_load()
-    if not f.exists('config') then return end
+    if not f.getInfo('config') then return end
     local ver = f.read('version')
     if ver ~= current_common_version then
         print('Unrecognized common save version')
@@ -199,14 +199,14 @@ function sm.common_load()
 end
 
 function sm.load()
-    if not f.exists("README") then
+    if not f.getInfo("README") then
         f.write("README", [[
 This is Marvellous Inc's save directory.
 
 Feel free to mess up the files here, but if the game crashes it is not our responsability :)]])
     end
     sm.common_load()
-    if not f.exists("saves") then
+    if not f.getInfo("saves") then
         f.createDirectory("saves")
     end
     local uppercase_users = {}
@@ -215,7 +215,7 @@ Feel free to mess up the files here, but if the game crashes it is not our respo
         if string.match(user, "[A-Z]") then
             table.insert(uppercase_users,user)
         end
-        if f.exists('saves/' .. user .. '/save_file') then
+        if f.getInfo('saves/' .. user .. '/save_file') then
             local ver = f.read('saves/' .. user .. '/version')
             sm.user_data[user] = binser.deserializeN(f.read('saves/' .. user .. '/save_file'), 1)
             if ver == "1" then -- 1 --> 2
@@ -235,7 +235,7 @@ Feel free to mess up the files here, but if the game crashes it is not our respo
             if ver ~= current_save_version then
                 -- deal with old save versions
             end
-            if not f.exists("saves/".. user .. "/custom_puzzles") then
+            if not f.getInfo("saves/".. user .. "/custom_puzzles") then
                 f.createDirectory("saves/".. user .. "/custom_puzzles")
             end
         end
@@ -270,8 +270,8 @@ function sm.load_code(puzzle, is_custom)
     else
         basename = 'saves/' .. sm.current_user .. '/custom_puzzles/' .. puzzle
     end
-    if f.exists(basename .. '.code') then code = f.read(basename .. '.code') end
-    if f.exists(basename .. '.renames') then
+    if f.getInfo(basename .. '.code') then code = f.read(basename .. '.code') end
+    if f.getInfo(basename .. '.renames') then
         for line in f.read(basename .. '.renames'):gmatch("[^\n]+") do
             num, str = line:match("^([%d]+)=([%a]+)$")
             if tonumber(num) and str then
