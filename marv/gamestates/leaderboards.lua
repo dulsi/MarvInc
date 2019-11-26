@@ -46,7 +46,7 @@ end
 function state:draw()
 
     Draw.allTables()
-    love.graphics.setColor(20, 20, 20, 230)
+    love.graphics.setColor(20/255.0, 20/255.0, 20/255.0, 230/255.0)
     love.graphics.rectangle("fill", 0, 0, W, H)
     for _,lb in ipairs(self.leaderboards) do
         lb:draw()

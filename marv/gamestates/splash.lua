@@ -34,10 +34,10 @@ function state:update(dt)
 end
 
 function state:draw()
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
     love.graphics.rectangle("fill", 0, 0, W, H)
     love.graphics.draw(img, 0, 0)
-    love.graphics.setColor(0, 0, 0, self.alp)
+    love.graphics.setColor(0, 0, 0, self.alp/255.0)
     love.graphics.rectangle("fill", 0, 0, W, H)
 end
 

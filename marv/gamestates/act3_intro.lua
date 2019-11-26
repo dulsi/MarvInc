@@ -62,7 +62,7 @@ function state:draw()
     -- Black background
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("fill", 0, 0, W, H)
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
 
     -- Installation progress bar
     love.graphics.setFont(FONTS.fira(30))

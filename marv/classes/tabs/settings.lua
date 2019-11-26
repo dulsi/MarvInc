@@ -11,6 +11,7 @@ require "classes.primitive"
 local Color = require "classes.color.color"
 require "classes.tabs.tab"
 require "classes.button"
+local util = require "util"
 
 local ScrollWindow = require "classes.scroll_window"
 
@@ -122,7 +123,7 @@ SettingsTab = Class {
 }
 
 function SettingsTab:trueDraw()
-    love.graphics.setColor(self.text_color)
+    love.graphics.setColor(util.color255To1(self.text_color))
 
     local h = 0
     --Draw title
@@ -139,7 +140,7 @@ function SettingsTab:trueDraw()
         end
         b:draw()
     end
-    love.graphics.setColor(self.text_color)
+    love.graphics.setColor(util.color255To1(self.text_color))
     --Draw separator
     love.graphics.setFont(self.separator_font)
     love.graphics.print("--------------------------", self.pos.x, h + 15)
@@ -235,7 +236,7 @@ function ToggleButton:mouseMoved(x, y)
 end
 
 function ToggleButton:draw()
-    love.graphics.setColor(30, 30, 30)
+    love.graphics.setColor(30/255.0, 30/255.0, 30/255.0)
     love.graphics.setLineWidth(4)
     love.graphics.rectangle('line', self.pos.x, self.pos.y, self.w, self.h)
     if self.square_mod > 0 then
@@ -244,7 +245,7 @@ function ToggleButton:draw()
         love.graphics.rectangle('fill', self.pos.x + self.w / 2 - sw / 2, self.pos.y + self.h / 2 - sh / 2, sw, sh)
     end
     if self.hover then
-        love.graphics.setColor(200, 200, 200, 80)
+        love.graphics.setColor(200/255.0, 200/255.0, 200/255.0, 80/255.0)
         love.graphics.rectangle('fill', self.pos.x, self.pos.y, self.w, self.h)
     end
 end
@@ -325,30 +326,30 @@ function Slider:draw()
     --Draw slider box background
     local x_margin = 12
     local y_margin = 5
-    love.graphics.setColor(255, 255, 255, 130)
+    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0, 130/255.0)
     love.graphics.rectangle('fill', self.pos.x-x_margin, self.pos.y - y_margin, self.size+2*x_margin, self:height()+2*y_margin, 5)
-    love.graphics.setColor(0, 0, 0, 60)
+    love.graphics.setColor(0, 0, 0, 60/255.0)
     love.graphics.setLineWidth(3)
     love.graphics.rectangle('line', self.pos.x-x_margin, self.pos.y - y_margin, self.size+2*x_margin, self:height()+2*y_margin, 5)
 
     --Draw slider line
     local h = self.slider_line_h
-    love.graphics.setColor(140, 191, 255)
+    love.graphics.setColor(140/255.0, 191/255.0, 255/255.0)
     love.graphics.rectangle('fill', self.pos.x, self.pos.y-h/2 + self.slider_gap, self.size*self.value, h)
-    love.graphics.setColor(196, 214, 237)
+    love.graphics.setColor(196/255.0, 214/255.0, 237/255.0)
     love.graphics.rectangle('fill', self.pos.x+self.size*self.value, self.pos.y-h/2 + self.slider_gap, self.size*(1-self.value), h)
     love.graphics.setLineWidth(3)
-    love.graphics.setColor(30, 30, 30)
+    love.graphics.setColor(30/255.0, 30/255.0, 30/255.0)
     love.graphics.rectangle('line', self.pos.x, self.pos.y-h/2 + self.slider_gap, self.size, h)
 
     --Draw slider box
-    love.graphics.setColor(37, 123, 237)
+    love.graphics.setColor(37/255.0, 123/255.0, 237/255.0)
     love.graphics.rectangle('fill', self:getSliderX() - self.w/2, self:getSliderY(), self.w, self.h, 5)
     love.graphics.setLineWidth(3)
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle('line', self:getSliderX() - self.w/2, self:getSliderY(), self.w, self.h, 5)
     if self.hover then
-        love.graphics.setColor(200, 200, 200, 80)
+        love.graphics.setColor(200/255.0, 200/255.0, 200/255.0, 80/255.0)
         love.graphics.rectangle('fill', self:getSliderX() - self.w/2, self:getSliderY(), self.w, self.h, 7)
     end
 end

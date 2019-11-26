@@ -172,7 +172,7 @@ function PuzzleButton:draw(mx, my)
     local c = color_table[self.puzzle.status]
 
     --Shadow of box
-    love.graphics.setColor(0,0,40,80)
+    love.graphics.setColor(0,0,40/255.0,80/255.0)
     local offset = 5
     love.graphics.rectangle('fill', self.pos.x - offset, self.pos.y + offset, self.w - 2, self.h, 5, 10)
 
@@ -182,7 +182,7 @@ function PuzzleButton:draw(mx, my)
 
     --Draw highlight effect
     if Util.pointInRect(mx, my, self) then
-        love.graphics.setColor(255, 255, 255, 50)
+        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0, 50/255.0)
         love.graphics.rectangle('fill', self.pos.x, self.pos.y, self.w - 2, self.h, 5, 10)
     end
 

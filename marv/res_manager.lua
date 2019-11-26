@@ -55,7 +55,7 @@ end
 
 function res.postDraw()
     love.graphics.pop()
-    love.graphics.setColor(0, 25, 0)
+    love.graphics.setColor(0, 25/255.0, 0)
     if tx > 0 then
         love.graphics.rectangle('fill', 0, 0, tx, res.getRealHeight())
         love.graphics.rectangle('fill', res.getRealWidth() - tx, 0, tx, res.getRealHeight())

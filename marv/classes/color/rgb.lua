@@ -42,7 +42,7 @@ function rgb.copy(c1, c2)  c1.r, c1.g, c1.b, c1.a = c2.r, c2.g, c2.b, c2.a end
 function rgb.set(c) love.graphics.setColor(c.r/255.0, c.g/255.0, c.b/255.0, c.a/255.0) end
 
 --Set the color used for drawing using 255 as alpha amount
-function rgb.setOpaque(c) love.graphics.setColor(c.r, c.g, c.b, 255) end
+function rgb.setOpaque(c) love.graphics.setColor(c.r, c.g, c.b, 255/255.0) end
 
 --Set the color used for drawing using 0 as alpha amount
 function rgb.setTransp(c) love.graphics.setColor(c.r, c.g, c.b, 0) end

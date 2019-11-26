@@ -118,7 +118,7 @@ end
 function CodeTab:draw()
     -- Drawing error message
     if self.err_msg and self.err_line ~= self.term.cursor.i then
-        love.graphics.setColor(255, 60, 60)
+        love.graphics.setColor(255/255.0, 60/255.0, 60/255.0)
         love.graphics.setFont(FONTS.fira(13))
         love.graphics.print("Line " .. self.err_line .. ": " .. self.err_msg, self.term.pos.x, self.term.pos.y - FONTS.fira(13):getHeight())
     end
@@ -141,7 +141,7 @@ function CodeTab:draw()
 
     if ROOM.test_i and ROOM.puzzle.test_count > 1 then
         love.graphics.setFont(self.test_font)
-        love.graphics.setColor(255, 255, 255, 160)
+        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0, 160/255.0)
         local tx, ty = self.pos.x + 20, self.pos.y + self.h - 45
         love.graphics.setLineWidth(0.5)
         love.graphics.rectangle('line', tx - 5, ty - 5, 60, 55, 5)

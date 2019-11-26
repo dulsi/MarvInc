@@ -356,7 +356,7 @@ function drawScoreIndicator(self, score, text, y, offset)
     local tx = x - tw/2
     local ty = y - l.player_line_h - th - 4 + offset
     --Draw bg
-    g.setColor(255,255,255,235)
+    g.setColor(255/255.0,255/255.0,255/255.0,235/255.0)
     g.rectangle("fill",tx-margin,ty-margin,tw+2*margin,th+2*margin,5)
     --Draw text
     Color.set(l.player_line_color)

@@ -207,7 +207,7 @@ function Memory:draw()
 
             if mx - dx + bsz >= Util.findId('code_tab').w + Util.findId('code_tab').pos.x then ddx = ddx + bsz end
 
-            love.graphics.setColor(0, 0, 0, 160)
+            love.graphics.setColor(0, 0, 0, 160/255.0)
             love.graphics.rectangle('fill', mx - ddx, my - bsz, bsz, bsz)
             Color.set(color)
             love.graphics.rectangle('line', mx - ddx, my - bsz, bsz, bsz)

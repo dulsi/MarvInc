@@ -327,14 +327,22 @@ local text_colors = {
     tab = {216,17,89}
 }
 
-function util.color255To1(color)
-    local color_mod = {}
-    local i = 1
-    while color[i] do
-        color_mod[i] = color[i] / 255.0
-        i = i + 1
+function util.color255To1(color, color2, color3, color4)
+    if type(color)=="number" then
+        if color4 then
+            return color / 255.0, color2 / 255.0, color3 / 255.0, color4 / 255.0
+        else
+            return color / 255.0, color2 / 255.0, color3 / 255.0, 255 / 255.0
+        end
+    else
+        local color_mod = {}
+        local i = 1
+        while color[i] do
+            color_mod[i] = color[i] / 255.0
+            i = i + 1
+        end
+        return color_mod
     end
-    return color_mod
 end
 
 --If non_default_color isn't nil, everything that is not default will be colored that way

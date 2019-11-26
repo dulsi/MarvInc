@@ -253,7 +253,7 @@ PopupFailed = Class{
 
     local _h = self.buttons[1].pos.y - 115
     --Draw bot last words "preview"
-    love.graphics.setColor(5,0,155)
+    love.graphics.setColor(5/255.0,0,155/255.0)
     love.graphics.setFont(FONTS.fira(14))
     love.graphics.printf("Bot #" .. self.bot_n .. " " .. self.bot.name.. " last words:", self.pos.x + self.border,
         _h - 45, self.w - self.border, "left")

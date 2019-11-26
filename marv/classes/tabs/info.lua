@@ -141,7 +141,7 @@ function InfoTab:trueDraw()
     -- Print bot id file
     if ROOM:connected() then
         local offset = 4
-        love.graphics.setColor(0,0,0,180)
+        love.graphics.setColor(0,0,0,180/255.0)
         love.graphics.rectangle("fill", self.pos.x + self.id_file_x - offset, self.pos.y + self.id_file_y + offset, self.id_file_w, self.id_file_h, 10)
         Color.set(self.id_file_color)
         love.graphics.rectangle("fill", self.pos.x + self.id_file_x, self.pos.y + self.id_file_y, self.id_file_w, self.id_file_h, 10)
@@ -164,7 +164,7 @@ function InfoTab:trueDraw()
 
         -- Bot portrait
         local offset = 3
-        love.graphics.setColor(0,0,0,180)
+        love.graphics.setColor(0,0,0,180/255.0)
         love.graphics.rectangle("fill", self.pos.x + self.portrait_x + 20-offset, self.pos.y + self.portrait_y + 28+offset, self.portrait_w, self.portrait_h, 5)
         Color.set(self.portrait_color)
         love.graphics.rectangle("fill", self.pos.x + self.portrait_x + 20, self.pos.y + self.portrait_y + 28, self.portrait_w, self.portrait_h, 5)

@@ -11,6 +11,7 @@ require "classes.primitive"
 local Color = require "classes.color.color"
 require "classes.tabs.tab"
 require "classes.button"
+local util = require "util"
 
 local ScrollWindow = require "classes.scroll_window"
 
@@ -64,7 +65,7 @@ function AchievementsTab:trueDraw()
 
     local h = 0
      -- Draw Title
-    love.graphics.setColor(self.title_color)
+    love.graphics.setColor(util.color255To1(self.title_color))
     love.graphics.setFont(self.title_font)
     local y = self.pos.y + self.title_font:getHeight() * .2
     love.graphics.printf("Achievements", self.pos.x, y, self.w, 'center')
@@ -74,7 +75,7 @@ function AchievementsTab:trueDraw()
     love.graphics.line(x, y, x + self.title_font:getWidth("Achievements"), y)
     h = h + self.title_font:getHeight() * 2 + self.title_gap
 
-    love.graphics.setColor(self.text_color)
+    love.graphics.setColor(util.color255To1(self.text_color))
     local x = 50
     local scale = self.ach_image_scale
     local completed
@@ -93,20 +94,20 @@ function AchievementsTab:trueDraw()
         local gap_x = 12
         local gap_y = 12
         local offset = 5
-        love.graphics.setColor(0, 0, 0, 190)
+        love.graphics.setColor(0, 0, 0, 190/255.0)
         love.graphics.rectangle("fill", x - gap_x - offset, h - gap_y + offset, self.w - 5, image:getHeight()*scale+2*gap_y, 7)
         if completed then
-            love.graphics.setColor(200, 250, 200, 220)
+            love.graphics.setColor(200/255.0, 250/255.0, 200/255.0, 220/255.0)
         else
-            love.graphics.setColor(200, 200, 200, 220)
+            love.graphics.setColor(200/255.0, 200/255.0, 200/255.0, 220/255.0)
         end
         love.graphics.rectangle("fill", x - gap_x, h - gap_y, self.w - 5, image:getHeight()*scale+2*gap_y, 8)
 
         --Draw image
         offset = 4
-        love.graphics.setColor(0, 0, 0, 180, 4)
+        love.graphics.setColor(0, 0, 0, 180/255.0, 4/255.0)
         love.graphics.rectangle("fill", x - offset, h + offset, image:getWidth()*scale, image:getHeight()*scale)
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
         love.graphics.draw(image, x, h, nil, scale)
 
         --Draw achievement name
@@ -129,7 +130,7 @@ function AchievementsTab:trueDraw()
 
         local small_gap = 3
         local name_y = h + image:getHeight()*scale/2 - (name_font:getHeight(ach[1]) + small_gap + descr_font:getHeight(descr_text))/2
-        love.graphics.setColor(self.text_color)
+        love.graphics.setColor(util.color255To1(self.text_color))
         love.graphics.setFont(name_font)
         love.graphics.print(ach[1], text_x, name_y)
 

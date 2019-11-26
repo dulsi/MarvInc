@@ -94,7 +94,7 @@ function WarningWindow:draw()
     local x, y
 
     --Draw black filter
-    love.graphics.setColor(30, 0, 0, 130)
+    love.graphics.setColor(30/255.0, 0, 0, 130/255.0)
     love.graphics.rectangle("fill", 0, 0, W, H)
 
     love.graphics.push()

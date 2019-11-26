@@ -85,11 +85,11 @@ local function drawUsername(b, x, y, mx, my)
 
     --Draw username
     love.graphics.setFont(f)
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
     love.graphics.print(str, x, y)
     --Draw hover effect
     if b.bx and Util.pointInRect(mx, my, x + f:getWidth("- "), y + 3, fw, fh - 5) then
-        love.graphics.setColor(255, 255, 255, 90)
+        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0, 90/255.0)
         love.graphics.rectangle("fill", x + f:getWidth("- "), y, fw, fh)
     end
 
@@ -99,7 +99,7 @@ local function drawUsername(b, x, y, mx, my)
     b.bx, b.by, b.bsz = x + f:getWidth(str) + 10, y + h * .1, h * .8
     --Hover effect
     if Util.pointInRect(mx, my, b.bx, b.by, b.bsz, b.bsz) then
-        love.graphics.setColor(255, 95, 66, 80)
+        love.graphics.setColor(255/255.0, 95/255.0, 66/255.0, 80/255.0)
         love.graphics.rectangle('fill', b.bx, b.by, b.bsz, b.bsz)
     end
     Color.set(Color.red())
@@ -112,7 +112,7 @@ end
 function state:usernames_draw()
     local f = love.graphics:getFont()
     if #self.user_buttons > 0 then
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
         mx, my = self.username_mx, self.username_my
         local cx, cy = self.user_buttons.x, self.user_buttons.y
         for _, b in ipairs(self.user_buttons) do
@@ -197,12 +197,12 @@ function state:draw()
     self.login:draw()
 
     -- known usernames
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
     love.graphics.print("Known users:", self.user_buttons.x + 20, self.user_buttons.y - f:getHeight() * 1.2)
     self.known_usernames:draw()
 
     -- fade in
-    love.graphics.setColor(0, 0, 0, self.fade_in_alp)
+    love.graphics.setColor(0, 0, 0, self.fade_in_alp/255.0)
     love.graphics.rectangle("fill", 0, 0, W, H)
 
     --exit button

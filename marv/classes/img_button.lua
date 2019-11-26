@@ -33,7 +33,7 @@ function ImgButton:draw()
 
 
     if self.highlight and self:highlight() then
-        love.graphics.setColor(128, 255, 128, 255)
+        love.graphics.setColor(128/255.0, 255/255.0, 128/255.0, 255/255.0)
         love.graphics.rectangle('line', self.pos.x, self.pos.y, self.w, self.h)
     end
 

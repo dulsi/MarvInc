@@ -221,7 +221,7 @@ function postDraw()
     _G.love.graphics.stencil(f, "replace", 1)
 
     _G.love.graphics.setStencilTest("greater", 0)
-    _G.love.graphics.setColor(255,255,255)
+    _G.love.graphics.setColor(255/255.0,255/255.0,255/255.0)
     for _, c in _G.ipairs(clouds) do
         _G.love.graphics.draw(c.img, c.x, c.y)
     end

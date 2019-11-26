@@ -11,6 +11,7 @@ require "classes.primitive"
 local Color = require "classes.color.color"
 require "classes.tabs.tab"
 require "classes.button"
+local util = require "util"
 
 local ScrollWindow = require "classes.scroll_window"
 
@@ -92,7 +93,7 @@ end
 
 function ManualTab:trueDraw()
     -- Possible future improvement: Avoid calling Util.stylizeText all the time, since the output is always the same.
-    love.graphics.setColor(self.text_color)
+    love.graphics.setColor(util.color255To1(self.text_color))
 
     local h = 0
     love.graphics.setFont(self.title_font)
@@ -115,7 +116,7 @@ function ManualTab:trueDraw()
 
             draw_border(all_but_default_text, x, y, W, 'left')
 
-            love.graphics.setColor(255, 255, 255) -- white to draw colored text
+            love.graphics.setColor(255/255.0, 255/255.0, 255/255.0) -- white to draw colored text
             love.graphics.printf(text, x, y, W, 'left')
 
             h = h + self.cmd_font:getHeight()
@@ -127,14 +128,14 @@ function ManualTab:trueDraw()
                 local x, y = self.pos.x + 20, self.pos.y + h
                 draw_border(all_but_default_text, x, y, self.w - 20)
 
-                love.graphics.setColor(255, 255, 255) -- white to draw colored text
+                love.graphics.setColor(255/255.0, 255/255.0, 255/255.0) -- white to draw colored text
                 love.graphics.printf(colored_text, x, y, self.w - 20)
 
 
                 h = h + wrap_height(self.cmd_info_font, normal_text, self.w - 20) + self.cmd_info_font:getHeight()
                 if #items[item].examples > 0 then
                     love.graphics.setFont(self.example_title_font)
-                    love.graphics.setColor(self.text_color)
+                    love.graphics.setColor(util.color255To1(self.text_color))
                     love.graphics.print("Examples", self.pos.x + 20, self.pos.y + h)
                     h = h + self.example_title_font:getHeight()
                     love.graphics.setLineWidth(.5)
@@ -142,14 +143,14 @@ function ManualTab:trueDraw()
                         h = h + 10
                         local colored_text, normal_text, all_but_default_text = Util.stylizeText(e[1], self.text_color, "cmntm") -- e[1] is the code
                         local dh = wrap_height(self.example_code_font, normal_text, self.w - 45)
-                        love.graphics.setColor(self.text_color)
+                        love.graphics.setColor(util.color255To1(self.text_color))
                         love.graphics.rectangle('line', self.pos.x + 20, self.pos.y + h + 2.5, self.w - 40, dh + 5)
                         love.graphics.setFont(self.example_code_font)
 
                         local x, y = self.pos.x + 22.5, self.pos.y + h + 5
                         draw_border(all_but_default_text, x, y, self.w - 45)
 
-                        love.graphics.setColor(255, 255, 255)
+                        love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
                         love.graphics.printf(colored_text, x, y, self.w - 45)
 
                         h = h + dh + 10
@@ -161,7 +162,7 @@ function ManualTab:trueDraw()
 
                             draw_border(all_but_default_text, x, y, self.w - 20)
 
-                            love.graphics.setColor(255, 255, 255)
+                            love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
                             love.graphics.printf(colored_text, x, y, self.w - 20)
 
                             h = h + wrap_height(self.example_expl_font, normal_text, self.w - 20)
@@ -170,11 +171,11 @@ function ManualTab:trueDraw()
                 end
                 if items[item].notes then
                     h = h + 20
-                    love.graphics.setColor(self.text_color)
+                    love.graphics.setColor(util.color255To1(self.text_color))
                     love.graphics.setFont(self.notes_title_font)
                     love.graphics.print("Notes", self.pos.x + 20, self.pos.y + h)
                     h = h + self.notes_title_font:getHeight() + 10
-                    love.graphics.setColor(255, 255, 255)
+                    love.graphics.setColor(255/255.0, 255/255.0, 255/255.0)
                     love.graphics.setFont(self.notes_text_font)
                     local colored_text, normal_text = Util.stylizeText(items[item].notes, self.text_color)
                     love.graphics.printf(colored_text, self.pos.x + 20, self.pos.y + h, self.w - 20)
@@ -267,7 +268,7 @@ end
 function PButton:draw()
     if not self.extra_width then return end -- ghost button
     if self.hover then
-        love.graphics.setColor(200, 200, 200, 100)
+        love.graphics.setColor(200/255.0, 200/255.0, 200/255.0, 100/255.0)
         love.graphics.rectangle('fill', self.pos.x, self.pos.y, self.w + self.extra_width, self.h)
     end
     Button.draw(self)
