@@ -77,11 +77,11 @@ function ScrollWindow:draw()
 
     -- Drawing scroll bar
     if self.on_grab then
-        love.graphics.setColor(r, g, b, grabAlpha)
+        love.graphics.setColor(r/255.0, g/255.0, b/255.0, grabAlpha/255.0)
     elseif self.on_hover then
-        love.graphics.setColor(r, g, b, hoverAlpha)
+        love.graphics.setColor(r/255.0, g/255.0, b/255.0, hoverAlpha/255.0)
     else
-        love.graphics.setColor(r, g, b, normalAlpha)
+        love.graphics.setColor(r/255.0, g/255.0, b/255.0, normalAlpha/255.0)
     end
     love.graphics.rectangle('fill', scrollBarBounds(self))
 end
