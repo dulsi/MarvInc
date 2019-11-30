@@ -452,10 +452,10 @@ function TextBox:keyPressed(key)
             c.p = #self.lines[c.i] + 1
         end
 
-    elseif key == 'home' then
+    elseif key == 'home' or (key == "kp7" and not shift) then
         c.p = 1
 
-    elseif key == 'end' then
+    elseif key == 'end' or (key == "kp1" and not shift) then
         c.p = #self.lines[c.i] + 1
 
     elseif key == 'tab' then
