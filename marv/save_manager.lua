@@ -147,7 +147,7 @@ function sm.login(user)
         if love.filesystem.getInfo("custom") then
             local list = {}
             for _, file in ipairs(love.filesystem.getDirectoryItems("custom")) do
-                if love.filesystem.isFile("custom/"..file.."/email.lua") then
+                if love.filesystem.getInfo("custom/"..file.."/email.lua") then
                     LParser.load_email(file)
                 end
             end

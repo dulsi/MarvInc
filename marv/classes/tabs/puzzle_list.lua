@@ -158,7 +158,18 @@ function PuzzleListTab:refresh()
     if love.filesystem.getInfo("custom") then
         local list = {}
         for _, file in ipairs(love.filesystem.getDirectoryItems("custom")) do
-            if love.filesystem.isFile("custom/"..file.."/level.lua") then
+            if file:match("[.]lua$") then
+                local path = 'custom/'..file
+                local pu = {ROWS = ROWS, COLS = COLS, print = print, _G = _G, random = love.math.random}
+                local f, err = love.filesystem.load(path)
+                setfenv(f, pu)
+                f()
+                local id = file:sub(1,-5) --Remove the ".lua"
+                table.insert(list, {name = pu.name, id = id, status = "custom"})
+            end
+        end
+        for _, file in ipairs(love.filesystem.getDirectoryItems("custom")) do
+            if love.filesystem.getInfo("custom/"..file.."/level.lua") then
                 local P = LParser.parse(file, true)
                 if P ~= nil then
                     table.insert(list, {name = P.name, id = file, status = "custom"})
