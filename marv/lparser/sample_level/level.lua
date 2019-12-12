@@ -61,7 +61,7 @@ Meta.SetLines(30)
 -- The number of registers available for the user (int). Must be >= 0.
 Meta.SetMemory(12)
 -- A description of this puzzle's objectives (string).
-Objective.SetText [[
+Meta.SetObjectiveText [[
 These are the objectives for this puzzle:
 - Write code.
 - Be efficient.
@@ -69,9 +69,9 @@ These are the objectives for this puzzle:
 - Have fun.
 ]]
 -- Extra information you might want to inform the user of (string).
-Meta.SetInfo [[
-Share us your solutions!
-]]
+Meta.SetExtraInfo {
+"Share us your solutions!"
+}
 
 -- A puzzle map is two-layered. The bottom-most layer only draws the floor, whilst the top layer
 -- handles objects. We refer to the bottom layer as the Floor Layer, and the top one as the Object
@@ -115,8 +115,8 @@ Floor.Register("blue_tile",   '=')
 -- the tile positions. Indexing starts at 1. PS: Remember to register the tiles before placing them!
 Floor.Register("blood_splat_1", 'b')
 Floor.Register("blood_splat_2", 'd')
-Floor.PlaceAt("blood_splat_1", 1, 1)
-Floor.PlaceAt("blood_splat_2", ROWS, COLS)
+Floor.PlaceAt("b", 1, 1)
+Floor.PlaceAt("d", ROWS, COLS)
 
 -- The following are keywords for constants:
 -- ROWS: number of rows
@@ -274,16 +274,14 @@ Container(bg, key, d, c, cnt, cnt_c)
     cnt   - initial content of this bucket ['paint', 'water', 'empty']
     cnt_c - color of contents [see /classes/color for a list of colors]
 
-// A Console object is a computer that allows either input or output (but not both).
-Console(img, c, bg, data, n)
-    img  - key reference to an image [string]
-    c    - console color [string]
-    bg   - whether to draw the background (floor) image behind this object [boolean]
-    data - if data is nil, then this console accepts data and is classified as 'output'. Else, the
-           console is of type 'input', and the bot may take data from it. In this case, if data is
-           a function with return type array, then its internal data shall be the function's return
+// A Console object is a computer that allows input and/or output.
+Console(color, type, dir, data, preview_numbers)
+    color - console color [string]
+    type  - input, output, or IO [string]
+    dir   - direction of the console [string]
+    data - If data is a function with return type array, then its internal data shall be the function's return
            value. If data is an array, then this console's internal data shall be the array. [nil, func, table]
-    n    - how many entries should the console show above it [int]
+    preview_numbers - how many entries should the console show above it [int]
 
 // An emitter emits a constant stream of deadly laser to a certain direction until obstructed by something.
 // An emitter can be turned on or off by a console of the same color as its laser's color.
@@ -345,45 +343,27 @@ Objects.PlaceAt(C3, 15, 14)
 -- builtin function OnStart() is then called. You can use this function for more complex
 -- initializations.
 
-Game.SetOnStart(function()
+Meta.SetOnStart(function()
     print("This should print right after the puzzle is loaded.")
 end)
 
--- A second Game function is Game.OnEnd(). It runs as soon as the puzzle is completed. You can use
+-- Meta.SetCompletedPopup runs as soon as the puzzle is completed. You can use
 -- this function to send a message to the player.
-Game.SetOnEnd(function()
-    -- The return value of OnEnd generates a Popup window for the user. You may want to give
-    -- different popup options depending on the outcome of the puzzle. Return order is:
-    --   title - Popup window title
-    --   text  - Popup text
-    --   color - Popup frame color
-    --   f_msg - First button text
-    --   f_clr - First button color
-    --   s_msg - Second button text
-    --   s_clr - Second button color
-    return "Title", "Text", "blue", "Option 1", "red", "Option 2", "green"
-end)
+Meta.SetCompletedPopup {
+    title = "Title",
+    text  = "Text",
+    color = "blue",
+    button1 = {
+        text = "k tks",
+        color = "red",
+    },
+    button2 = {
+        text = "fuck u",
+        color = "black"
+    }
+}
 
--- A third Game function is Game.OnDeath(). This function triggers anytime the bot dies. You can use
--- this function to count how many times the player killed bots in this puzzle, and later remind
--- them of how many lives they wasted on Game.OnEnd().
-
-kill_count = 0
-best_time = 0
-
-Game.SetOnDeath(function()
-    kill_count = kill_count + 1
-    best_time = 0
-end)
-
--- The Game function Game.OnTurn triggers on every instruction counter (every tick). Use this to
--- update or handle any objects that may change at every turn.
-Game.SetOnTurn(function()
-    best_time = best_time + 1
-end)
-
-
--- Function set by Objective.SetCheck() is run at every end of tick (each turn, command instruction) so that
+-- Function set by Meta.SetObjectiveCheck() is run at every end of tick (each turn, command instruction) so that
 -- you can check for any objectives being met. It returns true when all objectives have been
 -- completed.
 
@@ -397,7 +377,7 @@ v_pairs = (function()
     return v
 end)()
 
-Objective.SetCheck(function(grid)
+Meta.SetObjectiveCheck(function(grid)
     local v = grid[5][15].list
     if table.getn(v) ~= table.getn(v_pairs) then return false end
     for i, n in ipairs(v) do
