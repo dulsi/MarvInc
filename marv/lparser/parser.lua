@@ -47,7 +47,7 @@ local new_safe_env = function(...)
     return E
 end
 
-function parser.safe_env()
+function parser.safe_env(seed)
     local E = new_safe_env(
         "assert",
         "error",
@@ -102,20 +102,11 @@ function parser.safe_env()
     end
     -- unsafe because of memory usage
     E.string.rep = nil
+    -- Fixing random
+    local rd = love.math.newRandomGenerator(seed or 42)
+    E.math.random = function(...) return rd:random(...) end
+    E.math.randomseed = function(...) return rd:setSeed(...) end
     return E
-end
-
-local retrieve_asset = function(key)
-    if key == nil then return nil, "Expected reference key to asset. Got nil value!" end
-    local a = CUST_SHEET_IMG[key]
-    if a ~= nil then return a, "sprite" end
-    a = CUST_OBJS_IMG[key]
-    if a ~= nil then return a, "image" end
-    a = SHEET_IMG[key]
-    if a ~= nil then return a, "sprite" end
-    a = OBJS_IMG[key]
-    if a ~= nil then return a, "image" end
-    return nil, "Asset "..key.." not found!"
 end
 
 local function checkType(val, typestr, depth)
@@ -141,7 +132,23 @@ local function checkGrid(i, j, depth)
     checkNumber(j, 1, COLS, (depth or 3) + 1)
     return (i - 1) * COLS + j
 end
-local colors = {red = true, green = true, blue = true, white = true, orange = true, black = true}
+local colors = {
+    black = true,
+    white = true,
+    red = true,
+    green = true,
+    blue = true,
+    orange = true,
+    yellow = true,
+    purple = true,
+    pink = true,
+    transp = true,
+    brown = true,
+    gray = true,
+    teal = true,
+    magenta = true,
+    violet = true,
+}
 local function checkColor(clr, depth)
     if not colors[clr] then
         error("Non-existent color '" .. tostring(clr) .. "'", depth or 3)
@@ -155,9 +162,9 @@ local function checkDir(dir, depth)
     return _G[dir:upper() .. "_R"]
 end
 
-function parser.prepare(puz_f, t)
+function parser.prepare(puz_f, t, seed)
     -- Functions and tables allowed by the environment (considered safe-ish).
-    local _E = parser.safe_env()
+    local _E = parser.safe_env(seed)
     local extra = {}
     setfenv(puz_f, _E)
     if t == "level" then
@@ -178,6 +185,7 @@ function parser.prepare(puz_f, t)
             id     = "??",
             lines  = 99,
             memory = 10,
+            tests  = 1,
             info   = nil,
             popup  = {
                 title  = "Completed custom level",
@@ -195,21 +203,25 @@ function parser.prepare(puz_f, t)
             text  = "No objectives listed.",
             check = function() return false end,
         }
+
+        local checkList= function (val)
+            if type(val) == 'string' then return val end
+            local tab = {}
+            checkType(val, 'table', 4)
+            for i, v in ipairs(val) do
+                table.insert(tab, checkType(v, 'string', 4))
+            end
+            return table.concat(tab, "\n- ")
+        end
+
         -- Meta table
         _E.Meta = {
             SetName      = getSetter(extra.meta, 'name', checkType, 'string'),
             SetRoomName  = getSetter(extra.meta, 'id', checkType, 'string'),
             SetLines     = getSetter(extra.meta, 'lines', checkNumber, 1, 99),
             SetMemory    = getSetter(extra.meta, 'memory', checkNumber, 0, 200),
-            SetExtraInfo = getSetter(extra.meta, 'info', function(val)
-              if type(val) == 'string' then return val end
-              local tab = {}
-              checkType(val, 'table', 4)
-              for i, v in ipairs(val) do
-                table.insert(tab, checkType(v, 'string', 4))
-              end
-              return table.concat(tab, "\n- ")
-            end),
+            SetTestCount = getSetter(extra.meta, 'tests', checkNumber, 1, 10),
+            SetExtraInfo = getSetter(extra.meta, 'info', checkList),
             SetCompletedPopup = getSetter(extra.meta, 'popup', function(val)
                 local popup = {}
                 checkType(val, 'table', 4)
@@ -229,7 +241,7 @@ function parser.prepare(puz_f, t)
                 return popup
             end),
             SetOnStart        = getSetter(extra.meta, 'onStart', checkType, 'function'),
-            SetObjectiveText  = getSetter(extra.objective, 'text', checkType, 'string'),
+            SetObjectiveText  = getSetter(extra.objective, 'text', checkList),
             SetObjectiveCheck = getSetter(extra.objective, 'check', checkType, 'function'),
         }
 
@@ -269,10 +281,10 @@ function parser.prepare(puz_f, t)
                 objs.ref[c] = obj
                 objs.iref[obj] = c
             end,
-            PlaceAt = function(obj, i, j)
-                checkType(obj, 'table') -- check if it is an object
+            PlaceAt = function(ch, i, j)
+                checkString(ch, 1, 1)
                 local p = checkGrid(i, j)
-                objs.L = str_subchar(objs.L, p, objs.iref[obj])
+                objs.L = str_subchar(objs.L, p, ch)
             end
         }
         extra.objects = objs
@@ -302,12 +314,17 @@ function parser.prepare(puz_f, t)
         -- Importing assets
         _E.Import = {
             Image = function(key, path)
+                checkType(key, 'string')
+                checkType(path, 'string')
                 import.ref_imgs[key] = path
             end,
-            Sprite = function(key, d, path)
-                import.ref_sprites[key] = {d, path}
-            end,
+            -- Let's keep this out for now
+            -- Sprite = function(key, d, path)
+            --     import.ref_sprites[key] = {d, path}
+            -- end,
             Tile = function(key, path)
+                checkType(key, 'string')
+                checkType(path, 'string')
                 import.ref_tiles[key] = path
             end,
         }
@@ -479,14 +496,15 @@ local function newImage(path)
 end
 
 
-function parser.parse(id, noload)
+function parser.parse(id, noload, seed)
     -- Can't use most love.filesystem stuff since it may be outside of save dir
     local path = getAbsolutePath(id)
-    local f = path and loadfile(path .. "level.lua")
-    if not f then print("Custom level " .. id .. " not found") return nil end
-    local E, extra = parser.prepare(f, "level")
-    local s, err = pcall(f)
-    if not path or not f or not s then
+    if not path then print("Custom level " .. id .. " not found") return nil end
+    local f, err = loadfile(path .. "level.lua")
+    if not f then print("Failed to parse level " .. id .. ": " .. tostring(err)) return nil end
+    local E, extra = parser.prepare(f, "level", seed)
+    local ok, err = pcall(f)
+    if not path or not f or not ok then
         print("Custom level "..id.." has failed to compile! " .. tostring(err))
         return nil
     end
@@ -495,6 +513,7 @@ function parser.parse(id, noload)
     P.id = id
     P.is_custom = true
     P.n = extra.meta.id
+    P.test_count = extra.meta.tests
     P.orient = extra.bot.orientation:upper()
     P.init_pos = Vector(extra.bot.position[1], extra.bot.position[2])
     P.grid_floor = {}
@@ -581,6 +600,7 @@ function parser.parse(id, noload)
                     Obstacle(P.grid_obj, i, j, o.img)
                 else
                     print("Unrecognized object "..tostring(id).." at position ("..tostring(j)..", "..tostring(i)..").")
+                    return nil
                 end
             end
         end
@@ -588,6 +608,7 @@ function parser.parse(id, noload)
 
     -- Grid accessor
     local grid = {}
+    -- memoization table with weak keys
     local memo = setmetatable({}, {__mode = 'k'})
     for i = 1, ROWS do
         grid[i] = setmetatable({}, {
@@ -621,8 +642,19 @@ function parser.parse(id, noload)
     P.objective_text = extra.objective.text
     local check = extra.objective.check
     P.objective_checker = function()
-        -- protect this call
-        local ret = check(grid)
+        local ok, ret = pcall(check, grid)
+        if ok and type(ret) ~= 'string' and type(ret) ~= 'boolean' and type(ret) ~= 'nil' then
+            ok = false
+            ret = "Invalid objective checker return type. " ..
+            "Must be string or boolean, was " .. type(ret) .. "."
+        end
+        if not ok then
+            StepManager.stop(
+                "Custom level error",
+                "The custom level crashed while checking for objective.\n" ..
+                "Error: " .. tostring(ret)
+            )
+        end
         if type(ret) == 'string' then
             StepManager.stop("Error", ret)
             return false
@@ -631,20 +663,21 @@ function parser.parse(id, noload)
     end
     P.lines_on_terminal = extra.meta.lines <= 0 and 99 or extra.meta.lines
     P.memory_slots = extra.meta.memory
+    P.test_count = extra.meta.tests
     P.extra_info = extra.meta.info
     P.on_start = function()
-        -- pcal probably
-        extra.meta.onStart(grid)
+        local ok, err = pcall(extra.meta.onStart, grid)
+        if not ok then
+            print("The custom level crashed while starting up. Error: " .. tostring(err))
+            print("Ignoring this error and moving on.")
+        end
     end
     P.custom_completed = function()
-        -- improve this
         local popup = extra.meta.popup
-        if popup then
-            local disc = function() ROOM:disconnect() end
-            PopManager.new(popup.title, popup.text, popup.color,
-                {func = disc, text = popup.button1.text, clr = popup.button1.color},
-                popup.button2 and {func = disc, text = popup.button2.text, clr = popup.button2.color} or nil)
-        end
+        local disc = function() ROOM:disconnect() end
+        PopManager.new(popup.title, popup.text, popup.color,
+            {func = disc, text = popup.button1.text, clr = popup.button1.color},
+            popup.button2 and {func = disc, text = popup.button2.text, clr = popup.button2.color} or nil)
     end
     if not noload then
         P.code, P.renames = SaveManager.load_code(id, true)

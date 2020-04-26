@@ -18,15 +18,15 @@ local _name_chart = {
     cycles = 'CYCLES',
 }
 
-function state:enter(previous, puzzle_id, metrics)
-    local w, h = 350, 480
+function state:enter(previous, puzzle_id, metrics, use_player_score)
+    local w, h = 350, 530
     local step = W/(#metrics + 1)
     local x, y = step - w/2, H/2 - h/2
     self.leaderboards = {}
     for _,metric in ipairs(metrics) do
         local name = _name_chart[metric] or "METRIC"
         local lb = Leaderboards.create(x, y, w, h, name, true)
-        ScoreManager.populateLeaderboard(lb, puzzle_id, metric)
+        ScoreManager.populateLeaderboard(lb, puzzle_id, metric, use_player_score)
         table.insert(self.leaderboards, lb)
         x = x + step
     end
