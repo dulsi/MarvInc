@@ -148,6 +148,37 @@ else
     end })
 end
 
+function isModuleAvailable(name)
+    if package.loaded[name] then
+        return true
+    else
+        for _, searcher in ipairs(package.searchers or package.loaders) do
+            local loader = searcher(name)
+            if type(loader) == 'function' then
+                package.preload[name] = loader
+                return true
+            end
+        end
+        return false
+    end
+end
+
+USING_GAMERZILLA = true
+for i, cmd in ipairs(arg) do
+    if cmd == "--no-gamerzilla" then
+        USING_GAMERZILLA = false
+    end
+end
+if not isModuleAvailable("luagamerzilla") then
+    USING_GAMERZILLA = false
+end
+if USING_GAMERZILLA then
+    Gamerzilla = require "luagamerzilla"
+    Gamerzilla.start(false, love.filesystem.getSaveDirectory());
+    Gamerzilla.setGameFromFile("gamerzilla/marv.game", "");
+end
+print(love.data.data)
+
 function love.load(args)
     for i, cmd in ipairs(args) do
         if cmd:sub(1, 9) == "--puzzle=" then
@@ -251,4 +282,5 @@ function love.quit()
         bgmm.current_bgm:fadeout()
     end
     if USING_STEAM then Steam.shutdown() end
+    if USING_GAMERZILLA then Gamerzilla.quit() end
 end

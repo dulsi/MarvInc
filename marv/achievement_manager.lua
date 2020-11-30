@@ -41,6 +41,15 @@ function manager.updateSteamAchievements()
     Steam.userStats.storeStats()
 end
 
+function manager.updateGamerzillaAchievements()
+    for _,k in ipairs(ACHIEVEMENT_DATABASE) do
+        if ACHIEVEMENT_PROGRESS[k[1]] then
+            print("SetTrophy");
+            Gamerzilla.setTrophy(k[1])
+        end
+    end
+end
+
 function manager.load(data)
     if data then
         for i,k in pairs(ACHIEVEMENT_PROGRESS) do
@@ -48,6 +57,10 @@ function manager.load(data)
         end
         if USING_STEAM then
             manager.updateSteamAchievements()
+        end
+        if USING_GAMERZILLA then
+            print("Gamerzilla");
+            manager.updateGamerzillaAchievements()
         end
     end
 end
@@ -68,6 +81,9 @@ function manager.complete(name)
                     break
                 end
             end
+        end
+        if USING_GAMERZILLA then
+            Gamerzilla.setTrophy(name);
         end
 
         Signal.emit("new_achievement_message", name)

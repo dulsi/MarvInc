@@ -1,0 +1,134 @@
+{
+	"shortname": "marv",
+	"name": "Marvellous Inc.",
+	"image": "gamerzilla/marv.png",
+	"version": "1",
+	"trophy": [
+		{
+			"trophy_name": "Baby Robot Steps",
+			"trophy_desc": "Finish your first puzzle",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/first.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Party Boy",
+			"trophy_desc": "Attend Paul's houseparty",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/party.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Home Decor",
+			"trophy_desc": "Complete puzzle 'Home Improvement'",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/blaze_it.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "I Got You Bro",
+			"trophy_desc": "Complete puzzle 'Simple Sort'",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/bro.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "I, Dead Robot",
+			"trophy_desc": "Take an innocent robot's life away",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/kill_1.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Spilling Oil",
+			"trophy_desc": "Kill 10 robots dead",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/kill_10.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Mechanical Genocide",
+			"trophy_desc": "Brutally murder 100 robots",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/kill_100.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "One of a Kind",
+			"trophy_desc": "Receive a most peculiar robot",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/unique_robot.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Golden Star",
+			"trophy_desc": "Complete the tutorial",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_tut.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Senior Employee",
+			"trophy_desc": "Complete act 1",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_act1.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "The Price of Progress",
+			"trophy_desc": "Complete act 2",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_act2.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "EOF",
+			"trophy_desc": "Complete the main game",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_game.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "A New Dawn",
+			"trophy_desc": "Burn the evidence",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_against.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Better Years to Come...",
+			"trophy_desc": "Send proof from the inside",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/completed_pro.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Master of Optimization",
+			"trophy_desc": "Complete challenge puzzle 'Division II'",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/jen_extra.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Lord Commander of the Division's Watch",
+			"trophy_desc": "Complete challenge puzzle 'Small Division'",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/liv_extra1.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Sorting Doctor",
+			"trophy_desc": "Complete challenge puzzle 'Hardester Sort'",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/liv_extra2.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		},
+		{
+			"trophy_name": "Best Programmer in the World",
+			"trophy_desc": "Complete every puzzle in the game. Congratulations!",
+			"max_progress": "0",
+			"trueimage": "gamerzilla/all_puzzles.png",
+			"falseimage": "gamerzilla/incompleted.png"
+		}
+	]
+}
