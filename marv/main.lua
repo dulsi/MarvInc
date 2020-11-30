@@ -175,7 +175,7 @@ end
 if USING_GAMERZILLA then
     Gamerzilla = require "luagamerzilla"
     Gamerzilla.start(false, love.filesystem.getSaveDirectory());
-    Gamerzilla.setGameFromFile("gamerzilla/marv.game", "");
+    Gamerzilla.setGameFromFile("assets/gamerzilla/marv.game", "assets/");
 end
 print(love.data.data)
 
